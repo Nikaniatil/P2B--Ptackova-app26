@@ -13,22 +13,9 @@
     }
 
     /* Logo */
-    .logo {
+    .logo-img {
+        width: 220px;
         margin-top: 30px;
-    }
-
-    .spiral {
-        width: 80px;
-        height: 80px;
-        border: 6px solid #555;
-        border-radius: 50%;
-        border-top-color: transparent;
-        margin: auto;
-        transform: rotate(45deg);
-    }
-
-    h1 {
-        margin: 10px 0 30px 0;
     }
 
     /* Produkty */
@@ -79,11 +66,11 @@ function sendOrder() {
     ];
 
     let quantities = document.getElementsByClassName("qty");
-    let message = "Objednávka:\n\n";
+    let message = "Objednávka:\\n\\n";
 
     for (let i = 0; i < quantities.length; i++) {
         if (quantities[i].value > 0) {
-            message += products[i] + " - množství: " + quantities[i].value + "\n";
+            message += products[i] + " - množství: " + quantities[i].value + "\\n";
         }
     }
 
@@ -91,9 +78,9 @@ function sendOrder() {
     let email = document.getElementById("email").value;
     let phone = document.getElementById("phone").value;
 
-    message += "\nJméno: " + name;
-    message += "\nEmail: " + email;
-    message += "\nTelefon: " + phone;
+    message += "\\nJméno: " + name;
+    message += "\\nEmail: " + email;
+    message += "\\nTelefon: " + phone;
 
     window.location.href =
         "mailto:ptackova.nikola@kostka-skola.cz?subject=Objednávka Armilla&body=" +
@@ -105,9 +92,9 @@ function sendOrder() {
 
 <body>
 
-<div class="logo">
-    <div class="spiral"></div>
-    <h1>Armilla</h1>
+<!-- ✅ TVÉ LOGO -->
+<div>
+    <img src="logo.png" alt="Armilla logo" class="logo-img">
 </div>
 
 <div class="products">
