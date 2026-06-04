@@ -4,39 +4,32 @@
 <meta charset="UTF-8">
 <title>Armilla objednávky</title>
 
-<!-- Google font -->
+<!-- Fonty -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Montserrat&display=swap" rel="stylesheet">
 
 <style>
     body {
         font-family: 'Montserrat', sans-serif;
-        background-color: #f4efe6; /* béžová podle loga */
+        background-color: #f4efe6;
         text-align: center;
         margin: 0;
         padding: 0;
     }
 
-    /* Logo */
     .logo-img {
         width: 240px;
         margin: 40px 0 20px 0;
     }
 
-    h1 {
-        font-family: 'Playfair Display', serif;
-    }
-
-    /* Box pro obsah */
     .container {
         background: white;
-        width: 400px;
+        width: 420px;
         margin: auto;
         padding: 20px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* Tabulka produktů */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -45,26 +38,28 @@
 
     td {
         padding: 10px 5px;
-        font-size: 14px;
-    }
-
-    td:last-child {
-        text-align: right;
     }
 
     input.qty {
         width: 60px;
-        padding: 5px;
         text-align: center;
+        padding: 5px;
     }
 
-    /* Formulář */
     .form input {
         width: 100%;
         padding: 8px;
         margin: 5px 0 15px 0;
         border-radius: 6px;
         border: 1px solid #ccc;
+    }
+
+    .summary {
+        background: #f4efe6;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        text-align: left;
     }
 
     button {
@@ -84,14 +79,31 @@
 </style>
 
 <script>
+const prices = [45, 45, 45, 40, 40, 50];
+
+function updateTotal() {
+    let quantities = document.getElementsByClassName("qty");
+    let totalPieces = 0;
+    let totalPrice = 0;
+
+    for (let i = 0; i < quantities.length; i++) {
+        let qty = parseInt(quantities[i].value) || 0;
+        totalPieces += qty;
+        totalPrice += qty * prices[i];
+    }
+
+    document.getElementById("totalPieces").innerText = totalPieces;
+    document.getElementById("totalPrice").innerText = totalPrice + " Kč";
+}
+
 function sendOrder() {
     let products = [
-        "Náramek (růženín) - 45 Kč",
-        "Náramek (ametist) - 45 Kč",
-        "Náramek (achát) - 45 Kč",
-        "Náušnice (turmalín) - 40 Kč",
-        "Náušnice (růženín) - 40 Kč",
-        "Přívěšek (ametist) - 50 Kč"
+        "Náramek (růženín)",
+        "Náramek (ametist)",
+        "Náramek (achát)",
+        "Náušnice (turmalín)",
+        "Náušnice (růženín)",
+        "Přívěšek (ametist)"
     ];
 
     let quantities = document.getElementsByClassName("qty");
@@ -104,12 +116,15 @@ function sendOrder() {
     }
 
     let name = document.getElementById("name").value;
+    let surname = document.getElementById("surname").value;
     let email = document.getElementById("email").value;
     let phone = document.getElementById("phone").value;
 
-    message += "\\nJméno: " + name;
+    message += "\\nJméno: " + name + " " + surname;
     message += "\\nEmail: " + email;
     message += "\\nTelefon: " + phone;
+    message += "\\n\\nCelkem kusů: " + document.getElementById("totalPieces").innerText;
+    message += "\\nCelková cena: " + document.getElementById("totalPrice").innerText;
 
     window.location.href =
         "mailto:ptackova.nikola@kostka-skola.cz?subject=Objednávka Armilla&body=" +
@@ -121,50 +136,53 @@ function sendOrder() {
 
 <body>
 
-<!-- ✅ LOGO -->
 <img src="image.png" alt="Armilla logo" class="logo-img">
 
 <div class="container">
 
-    <!-- ✅ TABULKA (zarovnané řádky) -->
-    <table>
-        <tr>
-            <td>Náramek (růženín) - 45 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-        <tr>
-            <td>Náramek (ametist) - 45 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-        <tr>
-            <td>Náramek (achát) - 45 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-        <tr>
-            <td>Náušnice (turmalín) - 40 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-        <tr>
-            <td>Náušnice (růženín) - 40 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-        <tr>
-            <td>Přívěšek (ametist) - 50 Kč</td>
-            <td><input class="qty" type="number" min="0" value="0"></td>
-        </tr>
-    </table>
+<table>
+<tr>
+    <td>Náramek (růženín) - 45 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+<tr>
+    <td>Náramek (ametist) - 45 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+<tr>
+    <td>Náramek (achát) - 45 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+<tr>
+    <td>Náušnice (turmalín) - 40 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+<tr>
+    <td>Náušnice (růženín) - 40 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+<tr>
+    <td>Přívěšek (ametist) - 50 Kč</td>
+    <td><input class="qty" type="number" min="0" value="0" onchange="updateTotal()"></td>
+</tr>
+</table>
 
-    <!-- ✅ FORMULÁŘ -->
-    <div class="form">
-        <input type="text" id="name" placeholder="Jméno">
-        <input type="email" id="email" placeholder="Email">
-        <input type="tel" id="phone" placeholder="Telefon">
-    </div>
+<div class="form">
+    <input type="text" id="name" placeholder="Jméno">
+    <input type="text" id="surname" placeholder="Příjmení">
+    <input type="email" id="email" placeholder="E-mail">
+    <input type="tel" id="phone" placeholder="Telefon">
+</div>
 
-    <button onclick="sendOrder()">Odeslat objednávku</button>
+<!-- ✅ Souhrn -->
+<div class="summary">
+    <strong>Celkem kusů:</strong> <span id="totalPieces">0</span><br>
+    <strong>Celková cena:</strong> <span id="totalPrice">0 Kč</span>
+</div>
+
+<button onclick="sendOrder()">Odeslat objednávku</button>
 
 </div>
 
 </body>
 </html>
-``
